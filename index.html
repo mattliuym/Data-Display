@@ -1,0 +1,803 @@
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>药精灵数据展示平台</title>
+        <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0,user-scalable=no">
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <script src="js/jquery-2.1.1.min.js"></script>
+        <script src="/js/highcharts/highmaps.js"></script>
+<!--        <script src="http://cdn.hcharts.cn/highcharts/highcharts.js"></script>-->
+<!--        <script src="js/HighCharts/highcharts.js"></script>-->
+        <script src="js/HighCharts/highcharts-more.js"></script>
+<!--        <script src="/js/highcharts/Maps/map.js"></script>-->
+        <script src="js/HighCharts/exporting.js"></script>
+        <script src="js/HighCharts/data.js"></script>
+        <script src="js/HighCharts/series-label.js"></script>
+        <script src="js/HighCharts/funnel.js"></script>
+        <script src="js/HighCharts/oldie.js"></script>
+        <script src="js/HighCharts/highcharts-zh_CN.js"></script>
+        <script src="/js/highcharts/drilldown.js"></script>
+        <script src="/js/highcharts/exporting.js"></script>
+        <script src="https://code.highcharts.com.cn/highcharts/modules/data.js"></script>
+        <script src="/js/cn-map.js"></script>
+        <script src="js/bootstrap/bootstrap.js"></script>
+        <script src="js/bootstrap/bootstrap-table.js"></script>
+        <script src="js/bootstrap/bootstrap-table-zh-CN.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/echarts.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-gl/dist/echarts-gl.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts-stat/dist/ecStat.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/dataTool.min.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/china.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/map/js/world.js"></script>
+        <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/echarts/dist/extension/bmap.min.js"></script>
+        <link href="js/bootstrap/bootstrap.min.css" rel="stylesheet">
+        <link HREF="js/bootstrap/bootstrap-table.css" REL="stylesheet">
+        <style type="text/css">
+            *{
+                background: inherit;
+                background-color: rgba(51,51,51,1);
+            }
+            body{
+                height:900px;
+                width:1600px;
+            }
+            .header{
+                border-bottom: 1px solid lightgray;
+                margin: 0 auto;
+                display: flex;
+                justify-content: space-between;
+                align-content: center;
+                height:45px;
+            }
+            .img-box{
+                display: flex;
+                width: 8%;
+                border: none;
+            }
+            .header-img{;
+                width: 100%;
+                margin:0 auto;
+                vertical-align: middle;
+            }
+            .title-box{
+                width: 80%;
+                margin: 0 auto;
+                text-align: center;
+                color: #ffffff;
+                font-family: Arial,serif;
+                font-weight: 400;
+                height: 40px;
+                line-height: 40px;
+                font-size: large;
+                /*border: 1px solid goldenrod;*/
+            }
+            .refresh {
+                background: url("/images/refresh.png") no-repeat;
+                width: 30px;
+                height: 30px;
+                background-size: 30px 30px;
+                border: 0;
+            }
+            .content{
+                display: flex;
+                justify-content: space-between;
+                flex-flow: row;
+                margin: 0 auto;
+                color: #ffffff;
+                height:855px;
+                width:1600px;
+            }
+            .content-left{
+                height: 100%;
+                width: 26%;
+                display: flex;
+                flex-flow: column;
+                justify-content: space-around;
+                /*border: 1px solid rosybrown;*/
+            }
+            .left-top{
+                width: 100%;
+                height: 40%;
+                background-color: rgba(67,67,67,1);
+            }
+            .leftMiddle-table{
+                width: 90%;
+                height: 20%;
+                margin: 0 auto;
+                text-align: center;
+            }
+            .leftMiddle-table th{
+                height: 80%;
+                width: 33.3%;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bolder;
+            }
+            .leftMiddle-table td{
+                height: 20%;
+                width: 33.3%;
+                text-align: center;
+            }
+            .leftMiddle-table img{
+                width: 12px;
+                height: 12px;
+            }
+            .left-middle{
+                width: 100%;
+                height: 30%;
+                border: 0.5px solid lightgray;
+                background-color: rgba(67,67,67,1);
+            }
+            .left-bottom{
+                width: 100%;
+                height: 25%;
+                border: 0.5px solid lightgray;
+                background-color: rgba(67,67,67,1);
+            }
+            .content-middle{
+                height: 100%;
+                width: 46%;
+                display: flex;
+                flex-flow: column;
+                justify-content: space-around;
+                padding: 5px 0;
+            }
+            .middle-top{
+                width: 100%;
+                height: 70%;
+                border: 0.5px solid lightgray;
+            }
+            .middle-bottom{
+                display: flex;
+                flex-flow: row;
+                justify-content: space-between;
+                width: 100%;
+                height: 25%;
+                /*border: 1px solid green;*/
+            }
+            .mb-left{
+                width: 48%;
+                height: 100%;
+                border: 0.5px solid lightgray;
+                background-color: rgba(67,67,67,1);
+            }
+            .mb-right{
+                width: 48%;
+                height: 100%;
+                border: 0.5px solid lightgray;
+                background-color: rgba(67,67,67,1);
+            }
+            .content-right{
+                display: flex;
+                flex-flow: column;
+                justify-content: space-around;
+                padding: 5px 0;
+                width: 26%;
+                height: 100%;
+                /*border: 1px solid rosybrown;*/
+            }
+            .right-top{
+                width: 100%;
+                height: 30%;
+                background-color: rgba(67,67,67,1);
+            }
+            .rightTop-title{
+                width: 90%;
+                height:10%;
+                line-height: 30px;
+                margin: 0 auto;
+                text-align: center;
+                font-size: 18px;
+                border-bottom: 0.5px solid lightgray;
+                background-color: rgba(67,67,67,1);
+            }
+            .rightTop-table{
+                width: 90%;
+                height: 20%;
+                margin: 2px auto 0 auto;
+                text-align: center;
+                background-color: midnightblue;
+            }
+            .rightTop-table td{
+                text-align: center;
+                background-color: midnightblue;
+            }
+            .rightTop-pie{
+                width: 90%;
+                height: 65%;
+                margin: 0 auto;
+                background-color: rgba(67,67,67,1);
+            }
+            .right-middle{
+                width: 100%;
+                height: 36%;
+                background-color: rgba(67,67,67,1);
+            }
+            .rightMiddle-table{
+                width: 90%;
+                height:15%;
+                margin: 0 auto;
+                text-align: center;
+            }
+            .rightMiddle-table th{
+                height: 80%;
+                width: 33.3%;
+                text-align: center;
+                font-size: 24px;
+                font-weight: bolder;
+            }
+            .rightMiddle-table td{
+                height: 20%;
+                width: 33.3%;
+                text-align: center;
+            }
+            .rightMiddle-table img{
+                width: 12px;
+                height: 12px;
+            }
+            .rightMiddle-bar{
+                height: 35%;
+                width: 95%;
+                margin: 0 auto ;
+            }
+            .span1{
+                font-size: 12px;
+            }
+            .span2{
+                font-size: 6px;
+            }
+            .right-bottom{
+                width: 100%;
+                height: 32%;
+                background-color: rgba(67,67,67,1);
+            }
+            .title-case{
+                width: 100%;
+                height: 30px;
+                line-height: 30px;
+                text-align: center;
+            }
+            /*.title-input{*/
+            /*    width: 100%;*/
+            /*    text-align: right;*/
+            /*    margin-top: -15px;*/
+            /*}*/
+            /*左上*/
+            .client{
+                height:83%;
+                width: 100%;
+            }
+            ul{
+                display: flex;
+                justify-content: center;
+                /*border: 1px solid navajowhite;*/
+                margin: 0 auto;
+                width: 100%;
+            }
+            .tab-content{
+                height: 92%;
+                width: 100%;
+            }
+            .tab-pane.fade{
+                height: 100%;
+                width: 100%;
+            }
+            .tab-pane.fade.in.active{
+                height: 100%;
+                width: 100%;
+            }
+            .left-top *{
+                background-color: transparent;
+            }
+            .title-case{
+                width: 100%;
+                height: 10%;
+                line-height: 30px;
+                text-align: center;
+                font-size: 20px;
+            }
+            .title-input{
+                width: 100%;
+                height: 8%;
+                text-align: right;
+                padding-right: 2%;
+            }
+            .title-input span{
+                display: inline-block;
+                vertical-align: middle;
+            }
+            #myTab {
+                text-align: center;
+                height: 8%;
+            }
+            .nav-tabs {
+                border-bottom:none;
+            }
+            #myTab li a{
+                align-content: center;
+                /*height:5px;*/
+                text-align: center;
+                color:white;
+                padding:2px 15px 15px;
+            }
+            .nav-tabs>li.active>a, .nav-tabs>li.active>a:focus, .nav-tabs>li.active>a:hover{
+                background-color: purple;
+                border: 0;
+            }
+            .nav-tabs>li>a:hover{
+                background-color: purple;
+            }
+            /*.num-box{*/
+            /*    display: flex;*/
+            /*    justify-content: space-between;*/
+            /*    align-content: center;*/
+            /*    flex-wrap: wrap;*/
+            /*    margin-top: 3%;*/
+            /*    margin-left: 4%;*/
+            /*    margin-right: 4%;*/
+            /*}*/
+            .num-box div{
+                width: 33%;
+                text-align: center;
+            }
+            /*.num-box .num{*/
+            /*    font-size: 28px;*/
+            /*}*/
+            .container-topleft{
+                height:35%;
+                width:100%;
+            }
+            .roll-content{
+                height:300px;
+                overflow:hidden;
+            }
+            /*滚动信息列表*/
+            .box{
+                /*width:500px;*/
+                /*height:350px;*/
+                height:45%;
+                width:100%;
+                /*margin:100px auto;*/
+                border:1px solid #000;
+                border-radius:10px;
+                box-shadow:5px 5px 10px #333;
+                overflow:hidden;
+            }
+            .roll-content{
+                height:75%;
+            }
+            h3{
+                /*height:50px;*/
+                /*line-height:50px;*/
+                text-align:center;
+                font-size:12px;
+                color:#fff;
+                margin-top: 5px;
+            }
+            .msg1,#msg2,#msg4{
+                display:block;
+                padding-left:5%;
+                padding-right: 5%;
+            }
+            .msg1 li{
+                display: block;
+                list-style:none;
+                height:35px;
+                line-height:40px;
+                text-align:left;
+                padding-left:20px;
+                font-size:12px;
+                color:white;
+                border:1px solid #333333;
+                border-radius:15px;
+            }
+            #msg2 li{
+                display: block;
+                list-style:none;
+                height:35px;
+                line-height:40px;
+                text-align:left;
+                padding-left:20px;
+                font-size:12px;
+                color:white;
+                border:1px solid #000;
+                border-radius:15px;
+            }
+            #msg4 li{
+                display: block;
+                list-style:none;
+                height:35px;
+                line-height:40px;
+                text-align:left;
+                padding-left:20px;
+                font-size:12px;
+                color:white;
+                border:1px solid #000;
+                border-radius:15px;
+            }
+            .rightMiddle-rolling{
+                height:36%;
+                /*background: white;*/
+            }
+            li:hover{color:#f91;}
+        </style>
+    </head>
+    <body id="body">
+        <!--头部-->
+        <div class="header">
+            <div class="img-box">
+                <img class="header-img" src="images/logo.png">
+            </div>
+            <p class="title-box">
+                药精灵数据展示中台
+            </p>
+            <button class="refresh" onclick="refreshBtn()"></button>
+        </div>
+        <!--中间内容-->
+        <div class="content" id="main-content">
+            <!--左侧列-->
+            <div class="content-left">
+                <div class="left-top">
+                    <div class="title-case">
+                        用户活跃度
+                    </div>
+                    <div class="title-input">
+                        <input type="radio" name="test" value="0" checked><span>客户端</span>
+                        <input type="radio" name="test" value="1"><span>移动端</span>
+                    </div>
+                    <div class="client">
+                        <ul id="myTab" class="nav nav-tabs">
+                            <li class="active">
+                                <a href="#seven" data-toggle="tab">7天</a>
+                            </li>
+                            <li>
+                                <a href="#fifteen" data-toggle="tab" onclick="setTimeout('loadB()',500)">15天</a>
+                            </li>
+                            <li class="dropdown">
+                                <a href="#thirty" data-toggle="tab" onclick="setTimeout('loadC()',500)">30天</a>
+                            </li>
+                        </ul>
+                        <div id="myTabContent" class="tab-content">
+                            <div class="tab-pane fade in active" id="seven">
+                                <table name="user-info" class="leftMiddle-table">
+                                    <tr>
+                                        <th>36</th>
+                                        <th>3600</th>
+                                        <th>13602</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="span1">新增</span>
+                                            <img src="images/up.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                        <td>
+                                            <span class="span1">活跃</span>
+                                            <img src="images/down.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                        <td>
+                                            <span class="span1">总用户</span>
+                                            <img src="images/up.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="container-topleft" id="containera"></div>
+                                <!--滚动条-->
+                                <div class="box">
+                                    <h3>今日新增列表</h3>
+                                    <div class="roll-content" id="roll-content">
+                                        <ul class="msg1" id="msg1">
+                                            <li>考生走路甩手误将准考证扔河里 消防员跳河打捞</li>
+                                            <li>20余省公务员省考笔试放榜 作弊者特别惨</li>
+                                            <li>辟谷减肥：“大师”称意念发功可治病</li>
+                                            <li>2017公务员考试34万人报名 平均24人抢1个职位</li>
+                                            <li>钢票网与恒丰银行正式签订资金存管协议</li>
+                                            <li>男子送交警“胡乱作为 以权谋私”锦旗 被拘5日</li>
+                                            <li>美国会表决通过新驻华大使 月底有望赴华</li>
+                                            <li>英国曼彻斯特发生爆炸 事发地正举行演唱会</li>
+                                            <li>上海一家三口住9平米房间27年 儿子踩冰箱上床</li>
+                                            <li>女讲师称女孩最好嫁妆是贞操:没人愿娶堕过胎的</li>
+                                        </ul>
+                                        <ul id="msg2"></ul>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="fifteen">
+                                <table name="user-info" class="leftMiddle-table">
+                                    <tr>
+                                        <th>36</th>
+                                        <th>3600</th>
+                                        <th>13602</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="span1">新增</span>
+                                            <img src="images/up.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                        <td>
+                                            <span class="span1">活跃</span>
+                                            <img src="images/down.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                        <td>
+                                            <span class="span1">总用户</span>
+                                            <img src="images/up.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="container-topleft" id="containerb"></div>
+                            </div>
+                            <div class="tab-pane fade" id="thirty">
+                                <table name="user-info" class="leftMiddle-table">
+                                    <tr>
+                                        <th>36</th>
+                                        <th>3600</th>
+                                        <th>13602</th>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <span class="span1">新增</span>
+                                            <img src="images/up.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                        <td>
+                                            <span class="span1">活跃</span>
+                                            <img src="images/down.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                        <td>
+                                            <span class="span1">总用户</span>
+                                            <img src="images/up.png">
+                                            <span class="span2">36%</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="container-topleft" id="containerc"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div id="funnel-container" class="left-middle"></div>
+                <div id="barChart1" class="left-bottom"></div>
+            </div>
+            <!--中间列-->
+            <div class="content-middle">
+                <div class="middle-top">
+                    <div id="container" style="height: 50%; min-height:500px; min-width: 310px; max-width: 800px; margin: 0 auto"></div>
+                </div>
+                <div class="middle-bottom">
+                    <div id="barChart2" class="mb-left"></div>
+                    <div id="barChart3" class="mb-right"></div>
+                </div>
+            </div>
+            <!--右侧列-->
+            <div class="content-right">
+                <div class="right-top">
+                    <div class="rightTop-title">销售数据</div>
+                    <table class="rightTop-table">
+                        <tr style="height: 75%;color:#FFFF00;font-size: 24px;font-weight: bolder;">
+                            <td>12581189</td>
+                            <td>3912410</td>
+                        </tr>
+                        <tr style="height: 25%;color:#ffffff;font-size: 10px;font-weight: normal;">
+                            <td>消费总金额</td>
+                            <td>消费总笔数</td>
+                        </tr>
+                    </table>
+                    <div id="pieChart" class="rightTop-pie"></div>
+                </div>
+                <div class="right-middle">
+                    <div class="rightTop-title">会员信息</div>
+                    <table name="member-info" class="rightMiddle-table">
+                        <tr>
+                            <th>36</th>
+                            <th>3600</th>
+                            <th>13602</th>
+                        </tr>
+                        <tr>
+                            <td>
+                                <span class="span1">新增</span>
+                                <img src="images/up.png">
+                                <span class="span2">36%</span>
+                            </td>
+                            <td>
+                                <span class="span1">活跃</span>
+                                <img src="images/down.png">
+                                <span class="span2">36%</span>
+                            </td>
+                            <td>
+                                <span class="span1">总用户</span>
+                                <img src="images/up.png">
+                                <span class="span2">36%</span>
+                            </td>
+                        </tr>
+                    </table>
+                    <div id="barChart4" class="rightMiddle-bar"></div>
+                    <div id="rolling-content" class="rightMiddle-rolling">
+                        <h3>新增会员</h3>
+                        <div class="roll-content" id="roll-content2">
+                            <ul class="msg1" id="msg3">
+                                <li>考生走路甩手误将准考证扔河里 消防员跳河打捞</li>
+                                <li>20余省公务员省考笔试放榜 作弊者特别惨</li>
+                                <li>辟谷减肥：“大师”称意念发功可治病</li>
+                                <li>2017公务员考试34万人报名 平均24人抢1个职位</li>
+                                <li>钢票网与恒丰银行正式签订资金存管协议</li>
+                                <li>男子送交警“胡乱作为 以权谋私”锦旗 被拘5日</li>
+                                <li>美国会表决通过新驻华大使 月底有望赴华</li>
+                                <li>英国曼彻斯特发生爆炸 事发地正举行演唱会</li>
+                                <li>上海一家三口住9平米房间27年 儿子踩冰箱上床</li>
+                                <li>女讲师称女孩最好嫁妆是贞操:没人愿娶堕过胎的</li>
+                            </ul>
+                            <ul id="msg4"></ul>
+                        </div>
+                    </div>
+                </div>
+                <div id="lineChart2" class="right-bottom"></div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            var timer=100;
+            //滚动条js测试
+            var content1=document.getElementById("roll-content");
+            var content2=document.getElementById("roll-content2");
+            var msg1=document.getElementById("msg1");
+            var msg2=document.getElementById("msg2");
+            var msg3=document.getElementById("msg3");
+            var msg3=document.getElementById("msg4");
+            //if(!msg1||!msg2||!msg3||!msg4) return;
+            msg2.innerHTML=msg1.innerHTML;
+            msg4.innerHTML=msg3.innerHTML;
+            setInterval('myScrollTop(content1)',timer);
+            setInterval('myScrollTop(content2)',timer);
+            //滚动条方法
+            function myScrollTop(content){
+                //content.scrollTop>content.scrollHeight
+                if(content.scrollTop>=content.scrollHeight-content.clientHeight){
+                    content.scrollTop=0;
+                }else{
+                    content.scrollTop++
+                }
+            }
+            //刷新
+            function refreshBtn(){
+                window.location.reload();
+            }
+            $(function () {
+                 $('#myTab li:eq(0) a').tab('show');
+                 //resize the canvas based on different monitors
+                 var bHeight=window.screen.height;
+                 var bWidth=window.screen.width;
+                 var cheight=bHeight-45;
+                 if(bHeight>900){
+                     document.getElementById("body").style.height=bHeight+"px";
+                     document.getElementById("main-content").style.height=cheight+"px";
+                 }
+                 if(bWidth>1600){
+                     document.getElementById("body").style.width=bWidth+"px";
+                     document.getElementById("main-content").style.width=bWidth+"px";
+                 }
+             });
+            //近1年销售-毛利额走势
+            var chart = null;
+            // 获取 CSV 数据并初始化图表
+            $.getJSON('https://data.jianshukeji.com/jsonp?filename=csv/analytics.csv&callback=?', function (csv) {
+                chart = Highcharts.chart('lineChart2', {
+                    chart: {
+                        type: 'line',
+                        backgroundColor: 'rgba(67,67,67,1)'
+                    },
+                    data: {
+                        csv: csv
+                    },
+                    title : {
+                        text: '近1年销售-毛利额走势',
+                        style:{
+                            fontSize:'15px',
+                            color:'#ffffff'
+                        }
+                    },
+                    xAxis: {
+                        tickInterval: 30 * 24 * 3600 * 1000, // 坐标轴刻度间隔为一个月
+                        tickWidth: 0,
+                        gridLineWidth: 0,
+                        labels: {
+                            align: 'left',
+                            x: 3,
+                            y: -3,
+                            style:{
+                                fontSize:'8px',
+                                color:'#ffffff'
+                            }
+                        },
+                        // 时间格式化字符
+                        // 默认会根据当前的刻度间隔取对应的值，即当刻度间隔为一周时，取 week 值
+                        dateTimeLabelFormats: {
+                            month: '%Y-%m'
+                        }
+                    },
+                    yAxis: [{
+                        // 第一个 Y 轴，放置在左边（默认在坐标）
+                        title: {
+                            text: '单位：千万元',
+                            x:0,
+                            y:-60,
+                            style:{
+                                fontSize:'8px',
+                                color:'#ffffff',
+                                align:'center'
+                            }
+                        },
+                        labels: {
+                            align: 'left',
+                            x:0,
+                            y: 16,
+                            format: '{value:.,0f}',
+                            style:{
+                                fontSize:'8px',
+                                color:'#ffffff'
+                            }
+                        },
+                        showFirstLabel: false
+                    }],
+                    legend: {
+                        align: 'right',
+                        verticalAlign: 'top',
+                        y: 3,
+                        x:30,
+                        floating: true,
+                        borderWidth: 0,
+                        layout:'vertical',
+                        itemStyle:{
+                            fontSize:'10px',
+                            color:'white'
+                        }
+                    },
+                    tooltip: {
+                        shared: true,
+                        crosshairs: true,
+                        // 时间格式化字符
+                        // 默认会根据当前的数据点间隔取对应的值
+                        // 当前图表中数据点间隔为 1天，所以配置 day 值即可
+                        dateTimeLabelFormats: {
+                            day: '%Y-%m'
+                        }
+                    },
+                    credits: {
+                        enabled: false
+                    },
+                    exporting: {
+                        enabled:false
+                    },
+                    plotOptions: {
+                        series: {
+                            cursor: 'pointer',
+                            point: {
+                                events: {
+                                    // 数据点点击事件
+                                    // 其中 e 变量为事件对象，this 为当前数据点对象
+                                    click: function (e) {
+                                        $('.message').html( Highcharts.dateFormat('%Y-%m', this.x) + ':<br/>访问量：' +this.y );
+                                    }
+                                }
+                            },
+
+                            marker: {
+                                lineWidth: 1,
+                                radius:2
+                            }
+                        }
+                    }
+                });
+            });
+        </script>
+        <script src="/js/charts/linechart.js?v=202023"></script>
+        <script src="/js/charts/typePercent.js?v=202103"></script>
+        <script src="/js/charts/saleType.js?v=202103s"></script>
+    </body>
+
+</html>
