@@ -1,5 +1,5 @@
 # Data-Display
-A data visualization project based on Echarts and HighCharts
+A data visualization project based on Echarts and HighCharts. The purpose of this project is to show how useful the products are to the potential clients of Henan YunGo Intelligence Ltd. This project is a demo and all the data is dummy and hardcoded mannually. 
 
 How to use:
 
